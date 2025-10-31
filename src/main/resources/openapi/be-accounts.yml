@@ -1,0 +1,123 @@
+openapi: 3.0.3
+info:
+  title: Transactions API
+  version: "1.0"
+paths:
+  /accounts/{ownAccountNumber}/transactions:
+    get:
+      tags:
+        - TransactionsService
+      operationId: getTransactionsForAccount
+      summary: return transactions for demanded account
+      parameters:
+        - name: ownAccountNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Seznam transakcí
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransactionResponse'
+components:
+  schemas:
+    TransactionResponse:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/AmountDto'
+        bankref:
+          type: string
+        bookingDate:
+          type: string
+          format: date
+          nullable: true
+        counterPartyAccount:
+          $ref: '#/components/schemas/CounterPartyAccountDto'
+        creditDebitIndicator:
+          type: string
+          nullable: true
+        details:
+          $ref: '#/components/schemas/DetailsDto'
+        id:
+          type: string
+        ownAccountNumber:
+          type: string
+        postingDate:
+          type: string
+          format: date
+        productBankRef:
+          type: string
+          nullable: true
+        specificSymbol:
+          type: string
+          nullable: true
+        statementNumber:
+          type: string
+        statementPeriod:
+          type: string
+        transactionId:
+          type: string
+        transactionType:
+          type: string
+        transactionTypeCode:
+          type: integer
+        variableSymbol:
+          type: string
+          nullable: true
+      required:
+        - amount
+        - bankref
+        - postingDate
+        - counterPartyAccount
+        - id
+        - ownAccountNumber
+        - statementNumber
+        - statementPeriod
+        - transactionId
+        - transactionType
+        - transactionTypeCode
+    AmountDto:
+      type: object
+      properties:
+        currency:
+          type: string
+        value:
+          type: integer
+          format: int64
+      required:
+        - currency
+        - value
+    CounterPartyAccountDto:
+      type: object
+      properties:
+        accountName:
+          type: string
+        accountNumber:
+          type: string
+        bankCode:
+          type: string
+      required:
+        - accountName
+        - accountNumber
+        - bankCode
+    DetailsDto:
+      type: object
+      properties:
+        detail1:
+          type: string
+          nullable: true
+        detail2:
+          type: string
+          nullable: true
+        detail3:
+          type: string
+          nullable: true
+        detail4:
+          type: string
+          nullable: true
